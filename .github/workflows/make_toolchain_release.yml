@@ -40,6 +40,7 @@ jobs:
       run: |
         sed -i 's|\r$||g' variables
         grep -hE '^\s*PADAVAN_[A-Z0-9_]+=' variables >> "$GITHUB_ENV"
+        echo "BUILD_TIMESTAMP=$(date '+%Y.%m.%d_%H.%M.%S')" >> $GITHUB_ENV
 
     - name: Download sources and toolchain
       run: |
@@ -90,7 +91,7 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: tool-${{ github.run_number }}-${{ env.FIRMWARE_BUILDS_VER }}-${{ env.FIRMWARE_BUILDS_REV }}
+        tag_name: release-${{ env.BUILD_TIMESTAMP }}
         name: ${{ env.LIBC_DIR }}
         files: release/*
         draft: false
